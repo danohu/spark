@@ -4,7 +4,7 @@
   "description": "Random prompts for self-help, creativity, and project work",
   "start_url": ".",
   "scope": ".",
-  "display": "standalone",
+  "display": "browser",
   "background_color": "#111827",
   "theme_color": "#111827",
   "icons": [

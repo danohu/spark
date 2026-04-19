@@ -1,15 +1,11 @@
 {
   "prompts": [
     {
-      "id": "mi-1",
       "type": "text",
-      "category": "self-help",
       "content": "Meditate for 5 minutes."
     },
     {
-      "id": "mi-2",
       "type": "template",
-      "category": "self-help",
       "weight": 5,
       "content": "Think of {A} with initials {fi}{li}. {Z}",
       "variables": {
@@ -28,7 +24,6 @@
       }
     },
     {
-      "id": "mi-3",
       "type": "text",
       "content": "Satisfice."
     }

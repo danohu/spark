@@ -1,4 +1,4 @@
-const CACHE = 'spark-v2';
+const CACHE = 'spark-v3';
 const ASSETS = [
   './',
   'index.html',
@@ -8,6 +8,7 @@ const ASSETS = [
   'data/prompts/index.json',
   'data/prompts/mine.json',
   'data/prompts/oblique-strategies.json',
+  'data/prompts/tarot.json',
   'data/prompts/samples.json',
   'images/sunrise.svg',
   'images/blank-space.svg',

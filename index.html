@@ -65,11 +65,6 @@
       letter-spacing: 0.02em;
     }
 
-    .cat-btn.active[data-cat="all"]        { --a: var(--muted); }
-    .cat-btn.active[data-cat="self-help"]  { --a: var(--self-help); }
-    .cat-btn.active[data-cat="creativity"] { --a: var(--creativity); }
-    .cat-btn.active[data-cat="project"]    { --a: var(--project); }
-
     .cat-btn.active {
       color: var(--a, var(--muted));
       border-color: var(--a, var(--muted));
@@ -162,26 +157,72 @@
 
     #progress { flex: 1; text-align: center; }
 
+    #next-wrap {
+      position: relative;
+      width: 44px; height: 44px;
+      flex-shrink: 0;
+    }
+
     #next-btn {
       width: 44px; height: 44px;
       border-radius: 50%;
-      border: 1.5px solid var(--border);
+      border: none;
       background: var(--card);
       color: var(--muted);
       font-size: 20px;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
-      transition: background 0.15s, color 0.15s;
+      transition: color 0.3s;
       line-height: 1;
+      position: relative;
+      z-index: 1;
     }
-    #next-btn:active { background: #374151; color: var(--text); }
+    #next-btn:active:not(:disabled) { background: #374151; color: var(--text); }
+    #next-btn:disabled { cursor: default; }
+
+    /* SVG ring progress */
+    #next-ring {
+      position: absolute;
+      inset: 0;
+      width: 44px; height: 44px;
+      transform: rotate(-90deg);
+      pointer-events: none;
+    }
+    #next-ring-track {
+      fill: none;
+      stroke: var(--border);
+      stroke-width: 2;
+    }
+    #next-ring-fill {
+      fill: none;
+      stroke: var(--muted);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-dasharray: 126; /* 2π × 20 */
+      stroke-dashoffset: 126;
+      transition: stroke 0.3s;
+    }
 
     #hint {
       text-align: center;
       font-size: 11px;
       color: var(--muted);
       opacity: 0.6;
+    }
+
+    /* ── Tarot card ── */
+    .tarot-name {
+      font-size: 22px;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 10px;
+    }
+    .tarot-meaning {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.6;
+      display: block;
     }
 
     /* ── Empty state ── */
@@ -195,10 +236,7 @@
 <body>
 <div id="app">
   <div id="category-bar">
-    <button class="cat-btn active" data-cat="all">All</button>
-    <button class="cat-btn" data-cat="self-help">Self-help</button>
-    <button class="cat-btn" data-cat="creativity">Creativity</button>
-    <button class="cat-btn" data-cat="project">Project</button>
+    <button class="cat-btn active" data-file="all">All</button>
   </div>
 
   <div id="card">
@@ -212,22 +250,22 @@
 
   <div id="footer">
     <div id="progress"></div>
-    <button id="next-btn" aria-label="Next prompt">→</button>
+    <div id="next-wrap">
+      <svg id="next-ring" viewBox="0 0 44 44">
+        <circle id="next-ring-track" cx="22" cy="22" r="20"/>
+        <circle id="next-ring-fill"  cx="22" cy="22" r="20"/>
+      </svg>
+      <button id="next-btn" aria-label="Next prompt" disabled>→</button>
+    </div>
   </div>
 
   <div id="hint">Tap card or swipe to get next prompt</div>
 </div>
 
 <script>
-const ACCENT = {
-  'self-help':  '#f59e0b',
-  'creativity': '#8b5cf6',
-  'project':    '#10b981',
-};
-
-// files: array of { weight, prompts: [{weight, ...}] }
+// files: array of { slug, label, color, weight, prompts }
 let files = [];
-let activeCategory = 'all';
+let activeFile = 'all';
 
 // ── Load data ──
 async function init() {
@@ -236,21 +274,47 @@ async function init() {
     const idx = await idxRes.json();
     const loaded = await Promise.all(
       idx.files.map(async entry => {
+        const slug = entry.file.replace('.json', '');
         const res = await fetch(`data/prompts/${entry.file}`);
         const data = await res.json();
-        return { weight: entry.weight ?? 1, prompts: data.prompts };
+        // Stamp each prompt with its file metadata
+        const prompts = data.prompts.map(p => ({
+          ...p,
+          _slug: slug,
+          _label: entry.label ?? slug,
+          _color: entry.color ?? '#6b7280',
+        }));
+        return { slug, label: entry.label ?? slug, color: entry.color ?? '#6b7280',
+                 weight: entry.weight ?? 1, prompts };
       })
     );
     files = loaded;
+    buildFilterBar();
     nextPrompt(false);
   } catch (e) {
     document.getElementById('card-content').textContent = 'Could not load prompts.';
   }
 }
 
+// ── Build filter bar from loaded files ──
+function buildFilterBar() {
+  const bar = document.getElementById('category-bar');
+  // Keep the "All" button, add one per file
+  files.forEach(f => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-btn';
+    btn.dataset.file = f.slug;
+    btn.textContent = f.label;
+    btn.style.setProperty('--a', f.color);
+    btn.addEventListener('click', e => { e.stopPropagation(); setFile(f.slug); });
+    bar.appendChild(btn);
+  });
+}
+
 // ── Weighted random pick from array ──
 function weightedPick(items, weightFn) {
   const total = items.reduce((s, x) => s + (weightFn(x) ?? 1), 0);
+  if (total <= 0) return null;
   let r = Math.random() * total;
   for (const item of items) {
     r -= weightFn(item) ?? 1;
@@ -259,23 +323,24 @@ function weightedPick(items, weightFn) {
   return items[items.length - 1];
 }
 
-// ── Category selection ──
-function setCategory(cat) {
-  activeCategory = cat;
+// ── File selection ──
+function setFile(slug) {
+  activeFile = slug;
   document.querySelectorAll('.cat-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.cat === cat);
+    const active = btn.dataset.file === slug;
+    btn.classList.toggle('active', active);
+    if (!btn.style.getPropertyValue('--a')) {
+      btn.style.setProperty('--a', '#6b7280'); // All button
+    }
   });
   nextPrompt(false);
 }
 
 // ── Pick a prompt using two-level weighting ──
 function pickPrompt() {
-  // Filter files to those with eligible prompts
   const eligible = files.map(f => ({
     ...f,
-    prompts: activeCategory === 'all'
-      ? f.prompts
-      : f.prompts.filter(p => p.category === activeCategory)
+    prompts: activeFile === 'all' ? f.prompts : (f.slug === activeFile ? f.prompts : [])
   })).filter(f => f.prompts.length > 0);
 
   if (eligible.length === 0) return null;
@@ -286,12 +351,8 @@ function pickPrompt() {
 
 // ── Count eligible prompts (for display) ──
 function countEligible() {
-  return files.reduce((sum, f) => {
-    const ps = activeCategory === 'all'
-      ? f.prompts
-      : f.prompts.filter(p => p.category === activeCategory);
-    return sum + ps.length;
-  }, 0);
+  return files.reduce((sum, f) =>
+    sum + (activeFile === 'all' || f.slug === activeFile ? f.prompts.length : 0), 0);
 }
 
 // ── Template resolution ──
@@ -307,27 +368,33 @@ function resolveContent(p) {
 
 // ── Show a prompt ──
 function showPrompt(p) {
-  const color = ACCENT[p.category] || '#6b7280';
+  const color = p._color || '#6b7280';
   document.getElementById('card-top-bar').style.background = color;
   document.getElementById('card-category').style.color = color;
-  document.getElementById('card-category').textContent =
-    p.category ? p.category.replace('-', '\u2011') : '';
+  document.getElementById('card-category').textContent = p._label ?? '';
 
-  document.getElementById('card-content').textContent = resolveContent(p);
-  document.getElementById('card-content').classList.remove('empty');
+  const contentEl = document.getElementById('card-content');
+  contentEl.classList.remove('empty');
 
   const imgWrap = document.getElementById('card-image');
   const img = document.getElementById('card-img');
-  if (p.src) {
-    img.src = p.src;
-    img.alt = p.caption || '';
-    imgWrap.classList.add('visible');
-    if (p.type === 'image' && p.caption) {
-      document.getElementById('card-content').textContent = p.caption;
-    }
-  } else {
+
+  if (p.type === 'tarot') {
+    contentEl.innerHTML =
+      `<span class="tarot-name">${p.name}</span><span class="tarot-meaning">${p.meaning}</span>`;
     imgWrap.classList.remove('visible');
     img.src = '';
+  } else {
+    contentEl.textContent = resolveContent(p);
+    if (p.src) {
+      img.src = p.src;
+      img.alt = p.caption || '';
+      imgWrap.classList.add('visible');
+      if (p.type === 'image' && p.caption) contentEl.textContent = p.caption;
+    } else {
+      imgWrap.classList.remove('visible');
+      img.src = '';
+    }
   }
 }
 
@@ -335,7 +402,7 @@ function showPrompt(p) {
 function nextPrompt(animate = true) {
   const p = pickPrompt();
   if (!p) {
-    document.getElementById('card-content').textContent = 'No prompts in this category.';
+    document.getElementById('card-content').textContent = 'No prompts in this file.';
     document.getElementById('card-content').classList.add('empty');
     document.getElementById('progress').textContent = '';
     return;
@@ -359,19 +426,17 @@ function updateProgress() {
   document.getElementById('progress').textContent = `${countEligible()} prompts`;
 }
 
-// ── Category buttons ──
-document.querySelectorAll('.cat-btn').forEach(btn => {
-  btn.addEventListener('click', e => {
-    e.stopPropagation();
-    setCategory(btn.dataset.cat);
-  });
+// ── All button ──
+document.querySelector('.cat-btn[data-file="all"]').addEventListener('click', e => {
+  e.stopPropagation();
+  setFile('all');
 });
 
 // ── Tap card ──
 const card = document.getElementById('card');
-card.addEventListener('click', () => nextPrompt());
+card.addEventListener('click', () => nextPromptWithCooldown());
 
-// ── Swipe (left or right) or tap ──
+// ── Swipe (left or right) ──
 let touchStartX = 0, touchStartY = 0;
 card.addEventListener('touchstart', e => {
   touchStartX = e.touches[0].clientX;
@@ -382,15 +447,56 @@ card.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - touchStartX;
   const dy = e.changedTouches[0].clientY - touchStartY;
   if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-    nextPrompt(); // horizontal swipe
+    nextPromptWithCooldown();
   }
-  // taps handled by click event
 }, { passive: true });
+
+// ── Cooldown (3 s) ──
+const COOLDOWN_MS = 3000;
+const ring = document.getElementById('next-ring-fill');
+const CIRCUMFERENCE = 126; // 2π × r=20
+let cooldownRaf = null;
+let cooldownStart = null;
+let cooldownColor = '#6b7280';
+
+function startCooldown(color) {
+  const btn = document.getElementById('next-btn');
+  cooldownColor = color || '#6b7280';
+  btn.disabled = true;
+  btn.style.color = 'transparent';
+  ring.style.stroke = cooldownColor;
+  ring.style.strokeDashoffset = CIRCUMFERENCE;
+  cooldownStart = performance.now();
+
+  function tick(now) {
+    const elapsed = now - cooldownStart;
+    const frac = Math.min(elapsed / COOLDOWN_MS, 1);
+    ring.style.strokeDashoffset = CIRCUMFERENCE * (1 - frac);
+    if (frac < 1) {
+      cooldownRaf = requestAnimationFrame(tick);
+    } else {
+      btn.disabled = false;
+      btn.style.color = '';
+      ring.style.strokeDashoffset = CIRCUMFERENCE;
+    }
+  }
+  cooldownRaf = requestAnimationFrame(tick);
+}
+
+// Wrap nextPrompt to also trigger cooldown
+const _nextPrompt = nextPrompt;
+function nextPromptWithCooldown(animate = true) {
+  if (document.getElementById('next-btn').disabled) return;
+  _nextPrompt(animate);
+  // grab the current card color for the ring
+  const color = document.getElementById('card-top-bar').style.background;
+  startCooldown(color);
+}
 
 // ── Next button ──
 document.getElementById('next-btn').addEventListener('click', e => {
   e.stopPropagation();
-  nextPrompt();
+  nextPromptWithCooldown();
 });
 
 // ── Service worker ──
@@ -398,7 +504,10 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
 
-init();
+init().then(() => {
+  const color = document.getElementById('card-top-bar').style.background;
+  startCooldown(color);
+});
 </script>
 </body>
 </html>
