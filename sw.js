@@ -1,11 +1,14 @@
-const CACHE = 'spark-v1';
+const CACHE = 'spark-v2';
 const ASSETS = [
   './',
   'index.html',
   'manifest.json',
   'icon.svg',
   'icon-maskable.svg',
-  'data/prompts.json',
+  'data/prompts/index.json',
+  'data/prompts/mine.json',
+  'data/prompts/oblique-strategies.json',
+  'data/prompts/samples.json',
   'images/sunrise.svg',
   'images/blank-space.svg',
   'images/compass.svg',

@@ -1,0 +1,36 @@
+{
+  "prompts": [
+    {
+      "id": "mi-1",
+      "type": "text",
+      "category": "self-help",
+      "content": "Meditate for 5 minutes."
+    },
+    {
+      "id": "mi-2",
+      "type": "template",
+      "category": "self-help",
+      "weight": 5,
+      "content": "Think of {A} with initials {fi}{li}. {Z}",
+      "variables": {
+        "A": [
+          "somebody you know",
+          "a public figure",
+          "a fictional character"
+        ],
+        "fi": ["M","M","M","A","A","A","C","C","J","J","J","S","S","T","T","L","L","P","P","N","E","R","D","F","G","H","K","V","B","I","O"],
+        "li": ["M","M","S","S","B","B","K","K","L","L","H","H","W","W","P","P","R","R","G","G","N","F","D","T","C","V","J","A","E","Z"],
+        "Z": [
+          "How do you feel about them?",
+          "How would they feel about you?",
+          "What have they been up to recently?"
+        ]
+      }
+    },
+    {
+      "id": "mi-3",
+      "type": "text",
+      "content": "Satisfice."
+    }
+  ]
+}

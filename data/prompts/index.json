@@ -1,0 +1,7 @@
+{
+  "files": [
+    { "file": "mine.json",              "weight": 3 },
+    { "file": "oblique-strategies.json","weight": 0.5 },
+    { "file": "samples.json",           "weight": 0 }
+  ]
+}

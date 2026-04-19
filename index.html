@@ -225,21 +225,38 @@ const ACCENT = {
   'project':    '#10b981',
 };
 
-let prompts = [];
-let filtered = [];
-let queue = [];
+// files: array of { weight, prompts: [{weight, ...}] }
+let files = [];
 let activeCategory = 'all';
 
 // ── Load data ──
 async function init() {
   try {
-    const res = await fetch('data/prompts.json');
-    const data = await res.json();
-    prompts = data.prompts;
-    setCategory('all');
+    const idxRes = await fetch('data/prompts/index.json');
+    const idx = await idxRes.json();
+    const loaded = await Promise.all(
+      idx.files.map(async entry => {
+        const res = await fetch(`data/prompts/${entry.file}`);
+        const data = await res.json();
+        return { weight: entry.weight ?? 1, prompts: data.prompts };
+      })
+    );
+    files = loaded;
+    nextPrompt(false);
   } catch (e) {
     document.getElementById('card-content').textContent = 'Could not load prompts.';
   }
+}
+
+// ── Weighted random pick from array ──
+function weightedPick(items, weightFn) {
+  const total = items.reduce((s, x) => s + (weightFn(x) ?? 1), 0);
+  let r = Math.random() * total;
+  for (const item of items) {
+    r -= weightFn(item) ?? 1;
+    if (r <= 0) return item;
+  }
+  return items[items.length - 1];
 }
 
 // ── Category selection ──
@@ -248,9 +265,33 @@ function setCategory(cat) {
   document.querySelectorAll('.cat-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.cat === cat);
   });
-  filtered = cat === 'all' ? [...prompts] : prompts.filter(p => p.category === cat);
-  queue = [];
   nextPrompt(false);
+}
+
+// ── Pick a prompt using two-level weighting ──
+function pickPrompt() {
+  // Filter files to those with eligible prompts
+  const eligible = files.map(f => ({
+    ...f,
+    prompts: activeCategory === 'all'
+      ? f.prompts
+      : f.prompts.filter(p => p.category === activeCategory)
+  })).filter(f => f.prompts.length > 0);
+
+  if (eligible.length === 0) return null;
+
+  const file = weightedPick(eligible, f => f.weight);
+  return weightedPick(file.prompts, p => p.weight ?? 1);
+}
+
+// ── Count eligible prompts (for display) ──
+function countEligible() {
+  return files.reduce((sum, f) => {
+    const ps = activeCategory === 'all'
+      ? f.prompts
+      : f.prompts.filter(p => p.category === activeCategory);
+    return sum + ps.length;
+  }, 0);
 }
 
 // ── Template resolution ──
@@ -292,22 +333,13 @@ function showPrompt(p) {
 
 // ── Next prompt with animation ──
 function nextPrompt(animate = true) {
-  if (filtered.length === 0) {
+  const p = pickPrompt();
+  if (!p) {
     document.getElementById('card-content').textContent = 'No prompts in this category.';
     document.getElementById('card-content').classList.add('empty');
     document.getElementById('progress').textContent = '';
     return;
   }
-  if (queue.length === 0) {
-    // Shuffle all prompts into the queue (Fisher-Yates)
-    queue = [...filtered];
-    for (let i = queue.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [queue[i], queue[j]] = [queue[j], queue[i]];
-    }
-  }
-
-  const p = queue.pop();
 
   if (animate) {
     const card = document.getElementById('card');
@@ -324,8 +356,7 @@ function nextPrompt(animate = true) {
 }
 
 function updateProgress() {
-  const seen = filtered.length - queue.length;
-  document.getElementById('progress').textContent = `${seen} / ${filtered.length}`;
+  document.getElementById('progress').textContent = `${countEligible()} prompts`;
 }
 
 // ── Category buttons ──

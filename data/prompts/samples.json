@@ -1,0 +1,34 @@
+{
+  "prompts": [
+    {
+      "id": "sh-1",
+      "type": "text",
+      "category": "self-help",
+      "content": "What's one thing you've been avoiding? Name it, then write down the smallest possible first step."
+    },
+    {
+      "id": "cr-1",
+      "type": "template",
+      "category": "creativity",
+      "content": "Create something — anything — using only {constraint}.",
+      "variables": {
+        "constraint": [
+          "the colours you can see right now",
+          "sounds you can hear",
+          "three objects within reach",
+          "one continuous line",
+          "only words, no images",
+          "only shapes, no text",
+          "five minutes and whatever's in front of you"
+        ]
+      }
+    },
+    {
+      "id": "pr-1",
+      "type": "image",
+      "category": "project",
+      "src": "images/compass.svg",
+      "caption": "Where are you headed? Is that still where you want to go?"
+    }
+  ]
+}
