@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 220">
+  <rect width="400" height="220" fill="#111827"/>
+  <!-- outer frame -->
+  <rect x="30" y="18" width="340" height="184" rx="6" fill="none" stroke="#374151" stroke-width="1.5"/>
+  <!-- inner dashed border suggesting empty canvas -->
+  <rect x="48" y="34" width="304" height="152" rx="4" fill="none"
+        stroke="#374151" stroke-width="1" stroke-dasharray="6 4"/>
+  <!-- subtle X marks suggesting empty template -->
+  <line x1="48"  y1="34"  x2="352" y2="186" stroke="#1f2937" stroke-width="1"/>
+  <line x1="352" y1="34"  x2="48"  y2="186" stroke="#1f2937" stroke-width="1"/>
+  <!-- center dot -->
+  <circle cx="200" cy="110" r="3" fill="#4b5563"/>
+</svg>

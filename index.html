@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#111827">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Spark</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #111827;
+      --card: #1f2937;
+      --border: rgba(255,255,255,0.07);
+      --text: #f9fafb;
+      --muted: #6b7280;
+      --self-help: #f59e0b;
+      --creativity: #8b5cf6;
+      --project: #10b981;
+      --accent: var(--muted);
+    }
+
+    html, body {
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    #app {
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 20px 32px;
+      gap: 16px;
+    }
+
+    /* ── Category filter ── */
+    #category-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .cat-btn {
+      padding: 6px 14px;
+      border-radius: 99px;
+      border: 1.5px solid var(--muted);
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      letter-spacing: 0.02em;
+    }
+
+    .cat-btn.active[data-cat="all"]        { --a: var(--muted); }
+    .cat-btn.active[data-cat="self-help"]  { --a: var(--self-help); }
+    .cat-btn.active[data-cat="creativity"] { --a: var(--creativity); }
+    .cat-btn.active[data-cat="project"]    { --a: var(--project); }
+
+    .cat-btn.active {
+      color: var(--a, var(--muted));
+      border-color: var(--a, var(--muted));
+      background: color-mix(in srgb, var(--a, var(--muted)) 12%, transparent);
+    }
+
+    /* ── Card ── */
+    #card {
+      width: 100%;
+      max-width: 480px;
+      background: var(--card);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+
+    #card.fading {
+      opacity: 0;
+      transform: translateY(10px) scale(0.98);
+    }
+
+    #card-top-bar {
+      height: 3px;
+      background: var(--accent);
+      transition: background 0.35s;
+      flex-shrink: 0;
+    }
+
+    #card-inner {
+      padding: 24px 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex: 1;
+    }
+
+    #card-category {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      transition: color 0.35s;
+    }
+
+    #card-image {
+      border-radius: 10px;
+      overflow: hidden;
+      display: none;
+    }
+
+    #card-image.visible { display: block; }
+
+    #card-image img {
+      width: 100%;
+      max-height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+
+    #card-content {
+      font-size: 20px;
+      line-height: 1.5;
+      font-weight: 400;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      color: var(--text);
+    }
+
+    @media (min-height: 680px) { #card-content { font-size: 22px; } }
+    @media (min-height: 780px) { #card-content { font-size: 24px; } }
+
+    /* ── Footer ── */
+    #footer {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    #progress { flex: 1; text-align: center; }
+
+    #next-btn {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: var(--card);
+      color: var(--muted);
+      font-size: 20px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.15s, color 0.15s;
+      line-height: 1;
+    }
+    #next-btn:active { background: #374151; color: var(--text); }
+
+    #hint {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      opacity: 0.6;
+    }
+
+    /* ── Empty state ── */
+    #card-content.empty {
+      justify-content: center;
+      color: var(--muted);
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div id="category-bar">
+    <button class="cat-btn active" data-cat="all">All</button>
+    <button class="cat-btn" data-cat="self-help">Self-help</button>
+    <button class="cat-btn" data-cat="creativity">Creativity</button>
+    <button class="cat-btn" data-cat="project">Project</button>
+  </div>
+
+  <div id="card">
+    <div id="card-top-bar"></div>
+    <div id="card-inner">
+      <div id="card-category"></div>
+      <div id="card-image"><img id="card-img" src="" alt=""></div>
+      <div id="card-content">Loading…</div>
+    </div>
+  </div>
+
+  <div id="footer">
+    <div id="progress"></div>
+    <button id="next-btn" aria-label="Next prompt">→</button>
+  </div>
+
+  <div id="hint">Tap card or swipe to get next prompt</div>
+</div>
+
+<script>
+const ACCENT = {
+  'self-help':  '#f59e0b',
+  'creativity': '#8b5cf6',
+  'project':    '#10b981',
+};
+
+let prompts = [];
+let filtered = [];
+let queue = [];
+let activeCategory = 'all';
+
+// ── Load data ──
+async function init() {
+  try {
+    const res = await fetch('data/prompts.json');
+    const data = await res.json();
+    prompts = data.prompts;
+    setCategory('all');
+  } catch (e) {
+    document.getElementById('card-content').textContent = 'Could not load prompts.';
+  }
+}
+
+// ── Category selection ──
+function setCategory(cat) {
+  activeCategory = cat;
+  document.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.cat === cat);
+  });
+  filtered = cat === 'all' ? [...prompts] : prompts.filter(p => p.category === cat);
+  queue = [];
+  nextPrompt(false);
+}
+
+// ── Template resolution ──
+function resolveContent(p) {
+  if (p.type !== 'template') return p.content;
+  let text = p.content;
+  for (const [key, values] of Object.entries(p.variables || {})) {
+    const pick = values[Math.floor(Math.random() * values.length)];
+    text = text.replace(`{${key}}`, pick);
+  }
+  return text;
+}
+
+// ── Show a prompt ──
+function showPrompt(p) {
+  const color = ACCENT[p.category] || '#6b7280';
+  document.getElementById('card-top-bar').style.background = color;
+  document.getElementById('card-category').style.color = color;
+  document.getElementById('card-category').textContent =
+    p.category ? p.category.replace('-', '\u2011') : '';
+
+  document.getElementById('card-content').textContent = resolveContent(p);
+  document.getElementById('card-content').classList.remove('empty');
+
+  const imgWrap = document.getElementById('card-image');
+  const img = document.getElementById('card-img');
+  if (p.src) {
+    img.src = p.src;
+    img.alt = p.caption || '';
+    imgWrap.classList.add('visible');
+    if (p.type === 'image' && p.caption) {
+      document.getElementById('card-content').textContent = p.caption;
+    }
+  } else {
+    imgWrap.classList.remove('visible');
+    img.src = '';
+  }
+}
+
+// ── Next prompt with animation ──
+function nextPrompt(animate = true) {
+  if (filtered.length === 0) {
+    document.getElementById('card-content').textContent = 'No prompts in this category.';
+    document.getElementById('card-content').classList.add('empty');
+    document.getElementById('progress').textContent = '';
+    return;
+  }
+  if (queue.length === 0) {
+    // Shuffle all prompts into the queue (Fisher-Yates)
+    queue = [...filtered];
+    for (let i = queue.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [queue[i], queue[j]] = [queue[j], queue[i]];
+    }
+  }
+
+  const p = queue.pop();
+
+  if (animate) {
+    const card = document.getElementById('card');
+    card.classList.add('fading');
+    setTimeout(() => {
+      showPrompt(p);
+      card.classList.remove('fading');
+      updateProgress();
+    }, 220);
+  } else {
+    showPrompt(p);
+    updateProgress();
+  }
+}
+
+function updateProgress() {
+  const seen = filtered.length - queue.length;
+  document.getElementById('progress').textContent = `${seen} / ${filtered.length}`;
+}
+
+// ── Category buttons ──
+document.querySelectorAll('.cat-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    setCategory(btn.dataset.cat);
+  });
+});
+
+// ── Tap card ──
+const card = document.getElementById('card');
+card.addEventListener('click', () => nextPrompt());
+
+// ── Swipe (left or right) or tap ──
+let touchStartX = 0, touchStartY = 0;
+card.addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+card.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+    nextPrompt(); // horizontal swipe
+  }
+  // taps handled by click event
+}, { passive: true });
+
+// ── Next button ──
+document.getElementById('next-btn').addEventListener('click', e => {
+  e.stopPropagation();
+  nextPrompt();
+});
+
+// ── Service worker ──
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
+init();
+</script>
+</body>
+</html>

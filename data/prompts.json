@@ -1,0 +1,249 @@
+{
+  "prompts": [
+    {
+      "id": 1,
+      "type": "text",
+      "category": "self-help",
+      "content": "What's one thing you've been avoiding? Name it, then write down the smallest possible first step."
+    },
+    {
+      "id": 2,
+      "type": "text",
+      "category": "self-help",
+      "content": "Rate your energy right now 1–10. What would move it one point higher?"
+    },
+    {
+      "id": 3,
+      "type": "text",
+      "category": "self-help",
+      "content": "What would you tell your past self from one year ago?"
+    },
+    {
+      "id": 4,
+      "type": "text",
+      "category": "self-help",
+      "content": "Name three things that went well this week, however small."
+    },
+    {
+      "id": 5,
+      "type": "text",
+      "category": "self-help",
+      "content": "What belief is quietly holding you back right now?"
+    },
+    {
+      "id": 6,
+      "type": "text",
+      "category": "self-help",
+      "content": "Who do you want to become? Describe that person in the present tense."
+    },
+    {
+      "id": 7,
+      "type": "text",
+      "category": "self-help",
+      "content": "What's something you've been meaning to let go of?"
+    },
+    {
+      "id": 8,
+      "type": "text",
+      "category": "self-help",
+      "content": "Describe a moment this week when you felt most like yourself."
+    },
+    {
+      "id": 9,
+      "type": "text",
+      "category": "self-help",
+      "content": "What are you tolerating that you don't have to?"
+    },
+    {
+      "id": 10,
+      "type": "template",
+      "category": "self-help",
+      "content": "Write for 5 minutes about {theme} without stopping or editing.",
+      "variables": {
+        "theme": [
+          "what you're actually afraid of",
+          "what you genuinely want",
+          "what's been on your mind",
+          "a moment you're proud of",
+          "something you've outgrown",
+          "what 'enough' looks like for you"
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "type": "image",
+      "category": "self-help",
+      "src": "images/sunrise.svg",
+      "caption": "What are you moving toward?"
+    },
+    {
+      "id": 12,
+      "type": "text",
+      "category": "creativity",
+      "content": "Sketch the view from where you're sitting using only 10 lines."
+    },
+    {
+      "id": 13,
+      "type": "text",
+      "category": "creativity",
+      "content": "Write a six-word story about your current situation."
+    },
+    {
+      "id": 14,
+      "type": "text",
+      "category": "creativity",
+      "content": "Take one photo that represents how you feel right now. No filter."
+    },
+    {
+      "id": 15,
+      "type": "text",
+      "category": "creativity",
+      "content": "What creative project have you been dreaming about? Write one concrete thing you could do today."
+    },
+    {
+      "id": 16,
+      "type": "text",
+      "category": "creativity",
+      "content": "Describe your current mood as a landscape."
+    },
+    {
+      "id": 17,
+      "type": "text",
+      "category": "creativity",
+      "content": "Pick an object near you. Write its autobiography in 5 sentences."
+    },
+    {
+      "id": 18,
+      "type": "text",
+      "category": "creativity",
+      "content": "What would you make if you knew no one would judge it?"
+    },
+    {
+      "id": 19,
+      "type": "template",
+      "category": "creativity",
+      "content": "Create something — anything — using only {constraint}.",
+      "variables": {
+        "constraint": [
+          "the colors you can see right now",
+          "sounds you can hear",
+          "three objects within reach",
+          "one continuous line",
+          "only words, no images",
+          "only shapes, no text",
+          "five minutes and whatever's in front of you"
+        ]
+      }
+    },
+    {
+      "id": 20,
+      "type": "template",
+      "category": "creativity",
+      "content": "Combine {thing1} and {thing2} into something new. Sketch or describe it.",
+      "variables": {
+        "thing1": ["a morning ritual", "a frustration", "a childhood memory", "something you love", "a recurring dream"],
+        "thing2": ["an unexpected material", "a different era", "someone else's perspective", "an unusual color", "a sound or texture"]
+      }
+    },
+    {
+      "id": 21,
+      "type": "image",
+      "category": "creativity",
+      "src": "images/blank-space.svg",
+      "caption": "What belongs here?"
+    },
+    {
+      "id": 22,
+      "type": "text",
+      "category": "project",
+      "content": "What's the single most important thing you could work on today? Do that first."
+    },
+    {
+      "id": 23,
+      "type": "text",
+      "category": "project",
+      "content": "Write down everything in your head about your current project — clear the mental cache."
+    },
+    {
+      "id": 24,
+      "type": "text",
+      "category": "project",
+      "content": "Who could you ask for help today? What would you ask them?"
+    },
+    {
+      "id": 25,
+      "type": "text",
+      "category": "project",
+      "content": "What would make this project 10× better? What would make it good enough to ship?"
+    },
+    {
+      "id": 26,
+      "type": "text",
+      "category": "project",
+      "content": "What's one assumption about this project you haven't tested yet?"
+    },
+    {
+      "id": 27,
+      "type": "text",
+      "category": "project",
+      "content": "List every open loop in your current work. Pick one to close today."
+    },
+    {
+      "id": 28,
+      "type": "text",
+      "category": "project",
+      "content": "If you had to explain your project to someone in 2 sentences, what would you say?"
+    },
+    {
+      "id": 29,
+      "type": "text",
+      "category": "project",
+      "content": "What's the part of this project you're most uncertain about? Write down why."
+    },
+    {
+      "id": 30,
+      "type": "text",
+      "category": "project",
+      "content": "What would 'done' actually look like? Describe it concretely."
+    },
+    {
+      "id": 31,
+      "type": "template",
+      "category": "project",
+      "content": "Spend the next 25 minutes focused only on {area}. Close everything else.",
+      "variables": {
+        "area": [
+          "your biggest open question",
+          "the part you've been avoiding",
+          "the thing that's almost done",
+          "one decision you need to make",
+          "writing it down clearly"
+        ]
+      }
+    },
+    {
+      "id": 32,
+      "type": "template",
+      "category": "project",
+      "content": "Review your {aspect} and identify one thing to improve or eliminate.",
+      "variables": {
+        "aspect": [
+          "workflow",
+          "tools and setup",
+          "goals and priorities",
+          "weekly habits",
+          "communication patterns",
+          "definition of success"
+        ]
+      }
+    },
+    {
+      "id": 33,
+      "type": "image",
+      "category": "project",
+      "src": "images/compass.svg",
+      "caption": "Where are you headed? Is that still where you want to go?"
+    }
+  ]
+}
