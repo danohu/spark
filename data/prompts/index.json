@@ -5,6 +5,7 @@
     { "file": "de-bono.json",             "label": "de Bono",           "color": "#0ea5e9", "weight": 1   },
     { "file": "de-bono-sideways.json",    "label": "de Bono sideways",  "color": "#14b8a6", "weight": 3   },
     { "file": "tarot.json",               "label": "Tarot",             "color": "#c084fc", "weight": 0.5 },
+    { "file": "ideation.json",             "label": "Ideation",          "color": "#f97316", "weight": 2   },
     { "file": "samples.json",             "label": "Samples",           "color": "#6b7280", "weight": 0   }
   ]
 }

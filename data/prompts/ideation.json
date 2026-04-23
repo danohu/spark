@@ -1,0 +1,143 @@
+{
+  "prompts": [
+
+    { "type": "text", "content": "A photograph with someone cut out of it." },
+    { "type": "text", "content": "A border that cuts through a cemetery." },
+    { "type": "text", "content": "A song everyone knows but nobody remembers learning." },
+    { "type": "text", "content": "A door that opens onto nothing." },
+    { "type": "text", "content": "A monument nobody can explain anymore." },
+    { "type": "text", "content": "A recipe with one ingredient unspecified." },
+    { "type": "text", "content": "A building that kept the name of what it used to be." },
+    { "type": "text", "content": "A law that never got repealed." },
+    { "type": "text", "content": "A word that changed meaning completely." },
+    { "type": "text", "content": "A map of a place that no longer exists." },
+    { "type": "text", "content": "A photograph taken seconds before." },
+    { "type": "text", "content": "A coin that is no longer legal tender." },
+    { "type": "text", "content": "A flag from a country that no longer exists." },
+    { "type": "text", "content": "A letter that was never sent." },
+    { "type": "text", "content": "A key to a door that no longer exists." },
+    { "type": "text", "content": "A road that ends abruptly." },
+    { "type": "text", "content": "A path worn through grass that nobody planned." },
+    { "type": "text", "content": "A treaty that was never ratified." },
+
+    {
+      "type": "template",
+      "weight": 3,
+      "content": "{smell}\n{concept}",
+      "variables": {
+        "smell": [
+          "a room that belonged to someone who has died",
+          "rain after a long drought",
+          "a foreign city at 6am",
+          "candle smoke after it's blown out",
+          "food from a country you've left",
+          "an old book with handwriting in the margins",
+          "a church in a country you don't know",
+          "something burning that shouldn't be",
+          "the inside of an old car",
+          "clothing from someone you've lost"
+        ],
+        "concept": [
+          "palimpsest",
+          "liminality",
+          "anachronism",
+          "exile",
+          "inheritance",
+          "translation",
+          "rupture",
+          "archive",
+          "threshold",
+          "obsolescence",
+          "debt",
+          "gift",
+          "heresy",
+          "forgetting",
+          "consensus",
+          "vernacular"
+        ]
+      }
+    },
+
+    {
+      "type": "template",
+      "weight": 3,
+      "content": "{emotion}\n{object}",
+      "variables": {
+        "emotion": [
+          "anticipatory grief",
+          "the embarrassment of caring too much",
+          "pride in something you had no part in",
+          "recognising someone you loved in a stranger's gesture",
+          "relief that feels like loss",
+          "the guilt of forgetting a face",
+          "being moved by something you thought was beneath you",
+          "the feeling that a chapter has ended but nobody said so",
+          "the specific sadness of photographs of strangers",
+          "homesickness for somewhere you've never been"
+        ],
+        "object": [
+          "a map of a place that no longer exists",
+          "a flag from a country that no longer exists",
+          "a recipe with one ingredient unspecified",
+          "a monument nobody can explain anymore",
+          "a song everyone knows but nobody remembers learning",
+          "a door that opens onto nothing",
+          "a law that never got repealed",
+          "a word that changed meaning completely",
+          "a border that cuts through a cemetery",
+          "a letter that was never sent"
+        ]
+      }
+    },
+
+    {
+      "type": "template",
+      "weight": 3,
+      "content": "{color}\n{concept}",
+      "variables": {
+        "color": [
+          "the yellow of old newspaper",
+          "the blue of a bruise on its third day",
+          "the green of old copper",
+          "the red of flags",
+          "the white of surrender",
+          "faded denim",
+          "the brown of 1970s photographs",
+          "gold that meant divinity once",
+          "the beige of government forms",
+          "the grey of unclaimed luggage"
+        ],
+        "concept": [
+          "palimpsest",
+          "liminality",
+          "anachronism",
+          "exile",
+          "inheritance",
+          "translation",
+          "rupture",
+          "archive",
+          "threshold",
+          "obsolescence",
+          "debt",
+          "gift",
+          "heresy",
+          "forgetting",
+          "consensus",
+          "vernacular"
+        ]
+      }
+    },
+
+    { "type": "text", "content": "What's the last thing to disappear from a language when a community stops speaking it?" },
+    { "type": "text", "content": "Two people share a memory of the same event. What are they each wrong about?" },
+    { "type": "text", "content": "What gets lost when something becomes official?" },
+    { "type": "text", "content": "Think of an institution that outlived its reason. What keeps it going?" },
+    { "type": "text", "content": "What's the difference between a tradition and a habit?" },
+    { "type": "text", "content": "When did something you used to believe become something you used to believe?" },
+    { "type": "text", "content": "What would you have to forget to be a different person?" },
+    { "type": "text", "content": "Find the moment where something became irreversible." },
+    { "type": "text", "content": "Find the accident that became permanent." },
+    { "type": "text", "content": "What has to be forgotten for this to seem normal?" }
+
+  ]
+}
