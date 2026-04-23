@@ -1,0 +1,111 @@
+[
+  { "type": "text", "content": "White Hat. Stick to facts and figures. What do you actually know, and what's still missing?" },
+  { "type": "text", "content": "Red Hat. What do your feelings, hunches, and intuitions say? You don't have to justify them." },
+  { "type": "text", "content": "Black Hat. What could go wrong? Where are the risks, flaws, and weak points?" },
+  { "type": "text", "content": "Yellow Hat. What are the benefits? Why might this actually work? Make the best case." },
+  { "type": "text", "content": "Green Hat. Generate alternatives. What's a new idea — however unlikely — you haven't considered?" },
+  { "type": "text", "content": "Blue Hat. Step back. What are you really trying to achieve, and what thinking step comes next?" },
+
+  { "type": "text", "content": "PMI. List the Pluses, the Minuses, and the Interesting points. Don't skip Interesting." },
+  { "type": "text", "content": "CAF — Consider All Factors. What have you left out? What haven't you looked at yet?" },
+  { "type": "text", "content": "C&S — Consequences and Sequel. What follows in the short, medium, and long term?" },
+  { "type": "text", "content": "AGO — Aims, Goals, Objectives. What are you actually trying to do here? Be specific." },
+  { "type": "text", "content": "FIP — First Important Priorities. Of all the factors in play, which three matter most?" },
+  { "type": "text", "content": "APC — Alternatives, Possibilities, Choices. Force yourself to list three more options." },
+  { "type": "text", "content": "OPV — Other People's Views. Who is affected? What does this look like through their eyes?" },
+
+  { "type": "text", "content": "Challenge an assumption you're making. Why must it be that way? What if it weren't?" },
+  { "type": "text", "content": "Escape. Name a dominant idea in your thinking, then deliberately move away from it." },
+  { "type": "text", "content": "Movement, not judgement. Don't ask 'is this right?' — ask 'where does this idea take me?'" },
+  { "type": "text", "content": "State your problem in one sentence. Now state it again in a completely different way." },
+  { "type": "text", "content": "Strip the thing to its function. What is it for? Could another form serve the same function?" },
+  { "type": "text", "content": "A provocation (PO) is an idea that doesn't have to be true, only useful. Invent one now." },
+  { "type": "text", "content": "Reverse the usual. State the opposite of what normally happens. Where does that lead?" },
+  { "type": "text", "content": "Exaggerate one feature to an absurd extreme. What does that reveal?" },
+  { "type": "text", "content": "Distort. Change one fixed part of the situation. What breaks, and what becomes possible?" },
+  { "type": "text", "content": "Separate 'ego' from 'argument'. Would you still hold this view if it wasn't yours?" },
+
+  {
+    "type": "template",
+    "content": "Put on the {hat} Hat. {task}",
+    "variables": {
+      "hat": ["White", "Red", "Black", "Yellow", "Green", "Blue"],
+      "task": [
+        "Apply it to what you're thinking about right now.",
+        "Spend two minutes there before switching.",
+        "Write down three things from inside this hat."
+      ]
+    }
+  },
+  {
+    "type": "template",
+    "content": "Random word: {word}. Force a link between it and what you're working on.",
+    "variables": {
+      "word": [
+        "bridge", "mirror", "garden", "wire", "stamp", "rainfall", "basket",
+        "anchor", "key", "window", "rope", "mountain", "river", "lamp",
+        "whistle", "clock", "fence", "letter", "ladder", "pocket", "spoon",
+        "thread", "signal", "shadow", "tunnel", "wheel", "kettle", "magnet",
+        "feather", "compass", "candle", "needle", "button", "drum", "shell"
+      ]
+    }
+  },
+  {
+    "type": "template",
+    "content": "Provocation (PO): {provocation}. Use it as a stepping stone — where does it lead?",
+    "variables": {
+      "provocation": [
+        "cars have square wheels",
+        "the problem solves itself",
+        "you have unlimited time",
+        "you have no time at all",
+        "you must charge ten times more",
+        "you must give it away free",
+        "the user is your enemy",
+        "the user is your best friend",
+        "everything is backwards",
+        "the least important part is the most important",
+        "there is no deadline",
+        "you can only do one thing",
+        "nobody will ever see the result",
+        "the whole world will see the result",
+        "the tool uses you"
+      ]
+    }
+  },
+  {
+    "type": "template",
+    "content": "OPV: how would {person} see this? What would they notice that you don't?",
+    "variables": {
+      "person": [
+        "a child",
+        "your worst critic",
+        "a complete beginner",
+        "an expert from an unrelated field",
+        "someone from a hundred years ago",
+        "someone from a hundred years in the future",
+        "a journalist looking for a story",
+        "an accountant",
+        "a poet",
+        "your competitor",
+        "an outsider with no context",
+        "the person who has to live with the result"
+      ]
+    }
+  },
+  {
+    "type": "template",
+    "content": "Apply the {tool} tool to what you're working on.",
+    "variables": {
+      "tool": [
+        "PMI (Plus, Minus, Interesting)",
+        "CAF (Consider All Factors)",
+        "C&S (Consequences and Sequel)",
+        "AGO (Aims, Goals, Objectives)",
+        "FIP (First Important Priorities)",
+        "APC (Alternatives, Possibilities, Choices)",
+        "OPV (Other People's Views)"
+      ]
+    }
+  }
+]
