@@ -1,0 +1,95 @@
+[
+  { "type": "text", "content": "The opposite of your conclusion is also true. How?" },
+  { "type": "text", "content": "Find the part you haven't questioned. Question it." },
+  { "type": "text", "content": "What question are you avoiding because the answer would be inconvenient?" },
+  { "type": "text", "content": "What you call 'the problem' is a symptom of what?" },
+  { "type": "text", "content": "You already solved this, a year from now. How did you do it?" },
+  { "type": "text", "content": "Someone else is paid to worry about this. Who?" },
+  { "type": "text", "content": "Skip the obvious first step. Start at step two." },
+  { "type": "text", "content": "What would make this twice as bad? Solve that instead." },
+  { "type": "text", "content": "Assume the stupid idea is correct. Work out why." },
+  { "type": "text", "content": "Add an absurd constraint. Does the shape change?" },
+  { "type": "text", "content": "Name three things that are not the problem. Are you sure?" },
+  { "type": "text", "content": "The real problem is upstream of this one. How far upstream?" },
+  { "type": "text", "content": "Remove the most important person. Who replaces them?" },
+  { "type": "text", "content": "Describe your goal without using any noun from your plan." },
+  { "type": "text", "content": "Write the problem on a postcard. Which words don't fit?" },
+  { "type": "text", "content": "Put a price on doing nothing. Compare it honestly." },
+  { "type": "text", "content": "Someone is lying about this. Who? About what?" },
+  { "type": "text", "content": "Describe the situation as weather." },
+  { "type": "text", "content": "Invent a word for what's wrong here." },
+  { "type": "text", "content": "The room is on fire. Which part of your plan survives?" },
+
+  {
+    "type": "template",
+    "content": "{op}",
+    "variables": {
+      "op": [
+        "Shrink it to fit in a matchbox.",
+        "Hand it to its enemy to finish.",
+        "Describe it to a stranger in eight words.",
+        "Replace one participant with an animal.",
+        "Cross out the first line of your plan.",
+        "Solve the smaller problem next to it instead.",
+        "Give it a name it would hate.",
+        "Do it in the wrong order.",
+        "Subtract. Then subtract again.",
+        "Rename every person involved. Does the story change?"
+      ]
+    }
+  },
+  {
+    "type": "template",
+    "content": "How would {role} approach this?",
+    "variables": {
+      "role": [
+        "a smuggler",
+        "a lighthouse keeper",
+        "a bored teenager",
+        "a judge who doesn't care about the law",
+        "a forger",
+        "a cartographer",
+        "a ghost",
+        "a dog with a long memory",
+        "an impatient customer",
+        "a retired rival"
+      ]
+    }
+  },
+  {
+    "type": "template",
+    "content": "Stepping stone: {ss}. Don't defend it — move from it.",
+    "variables": {
+      "ss": [
+        "the goal is the opposite of what you said",
+        "only strangers can help",
+        "it must be finished by tomorrow lunchtime",
+        "the tool is illegal",
+        "your best collaborator is also your critic",
+        "success would embarrass you",
+        "failure is already logged",
+        "you are impersonating someone competent"
+      ]
+    }
+  },
+  {
+    "type": "template",
+    "content": "Random word: {word}. Force a link.",
+    "variables": {
+      "word": [
+        "pumice", "seance", "ledger", "barnacle", "liniment", "vestibule",
+        "pennant", "mulch", "clinker", "gazebo", "kismet", "lanyard",
+        "tureen", "sluice", "scree", "plinth", "escutcheon", "tincture",
+        "cairn", "marl", "quiver", "grommet"
+      ]
+    }
+  },
+  {
+    "type": "template",
+    "content": "Replace every '{word}' in your plan with '{replacement}'. Re-read it.",
+    "variables": {
+      "word": ["should", "problem", "goal", "user", "finish", "start"],
+      "replacement": ["could", "invitation", "pretext", "accomplice", "stop", "re-start"]
+    }
+  }
+]
