@@ -2,6 +2,12 @@
 
 **Deliverable:** reasoned adopt/extend/borrow/build recommendation against requirements R1–R9.
 
+> **Companion:** [`spec-kit-requirements-reevaluation.md`](./spec-kit-requirements-reevaluation.md) inverts this
+> question — it examines Spec Kit's 11-month git history for evidence that *our* requirements are
+> unrealistic. It supersedes one finding below: `[Spec §X.Y]` section references and an ≥80%
+> traceability floor **do** survive in today's `checklist.md` (lines 180–216), which softens the R2
+> assessment in §3. See its §0 and §1 (Retreat 4).
+
 ## 0. Method, versions, and confidence
 
 **Examined by direct source inspection** (cloned, read):
